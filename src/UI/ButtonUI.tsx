@@ -9,6 +9,8 @@ export default function ButtonUI(children: ButtonProps) {
         variant={children.variant}
         sx={children.sx}
         disabled={children.disabled}
+        startIcon={children.startIcon}
+        endIcon={children.endIcon}
       >
         {children.title}
       </Button>
