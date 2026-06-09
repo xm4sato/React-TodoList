@@ -3,13 +3,13 @@ import type { ReactElement } from "react";
 /**
  * Represents a main navigation section or category in the application UI.
  */
-export type SectionsType = { 
+export type SectionsType = {
   /** @type {number} Unique identifier for the section */
-  id: number; 
+  id: number;
   /** @type {string} Display name of the section (e.g., "Inbox", "Today") */
-  name: string; 
+  name: string;
   /** @type {ReactElement} Pre-rendered React icon element for the sidebar */
-  icon: ReactElement; 
+  icon: ReactElement;
 };
 
 /**
@@ -31,11 +31,11 @@ export type ProjectsListType = {
  */
 export type ProjectTheme = {
   /** Holds the configuration for the project's visual identity */
-  icon: { 
+  icon: {
     /** @type {number} Normalized ID reference to map against the global icons database (avoids serialization bugs) */
-    iconID: number; 
+    iconID: number;
     /** @type {string} Selected hex color code for the icon/theme background */
-    color: string; 
+    color: string;
   };
 };
 
@@ -51,7 +51,9 @@ export interface ProjectType extends ProjectTheme {
   /** @type {string} Optional detailed notes or description regarding the project scope */
   description?: string;
   /** @type {string | Date} Deadlines or target completion timestamp formatted as a string or native Date object */
-  CompleteDate: string | Date;
+  // CompleteDate: string | Date;
+  createDate: string | Date;
+  lastUpdate: string | Date;
 }
 
 /**
@@ -68,7 +70,7 @@ export interface ProjectStoreType {
    * Action to toggle the visibility state of the modal viewport.
    * @param {boolean} isOpened - Next visibility state flag.
    */
-  handleModal: (isOpened: boolean) => void;
+  // handleModal: (isOpened: boolean) => void;
   /**
    * Action to register a validated project into the global memory stack.
    * @param {ProjectType} project - The dynamic project object payload.
@@ -84,11 +86,11 @@ export interface ProjectStoreType {
 /**
  * A generalized, highly reusable polymorphic list item structure.
  */
-export type SimpleList = { 
+export type SimpleList = {
   /** @type {number} Item identifier */
-  id: number; 
+  id: number;
   /** @type {any} Dynamic property capable of carrying primitive values, color codes, or icon registry components */
-  name: any; 
+  name: any;
 };
 
 /**

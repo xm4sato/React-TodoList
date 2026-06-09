@@ -1,14 +1,13 @@
 import { create } from "zustand";
 import type { ProjectType, ProjectStoreType } from "../Types/Projects";
-import { toastSuccess } from  "@/UI/Toastify";
-// import { ProjectValidation } from "../Validation/Projects";
+import { toastSuccess } from "@/UI/Toastify";
 
 /**
  * Zustand global store management for handling projects state,
  * modal visibility, validation errors, and local persistence.
  * * @returns {ProjectStoreType} The reactive state hooks and actions.
  */
-export const useStore = create<ProjectStoreType>((set, get) => ({
+export const useProjectStore = create<ProjectStoreType>((set, get) => ({
   /** @type {boolean} Controls the visibility state of the Project creation Modal */
   isModalOpened: false,
 
@@ -24,8 +23,6 @@ export const useStore = create<ProjectStoreType>((set, get) => ({
    * Toggles the open/close state of the project creation modal.
    * @param {boolean} isOpened - The desired visibility state.
    */
-  handleModal: (isOpened: boolean) => set({ isModalOpened: isOpened }),
-
   /**
    * Asynchronously validates, checks uniqueness, and adds a new project to the store.
    * Automatically triggers persistent storage on success.
@@ -50,11 +47,7 @@ export const useStore = create<ProjectStoreType>((set, get) => ({
 
       return { Projects: updatedProjects };
     });
-
-    // UX Enhancement: Delayed closing mechanism to allow notifications to finish rendering
-    setTimeout(() => {
-      get().handleModal(false);
-    }, 500);
+    
   },
 
   /**

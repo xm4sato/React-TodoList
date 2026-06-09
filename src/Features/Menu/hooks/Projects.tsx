@@ -14,7 +14,8 @@ export const useProjectsState = () => {
     id: generateShortId(),
     name: "",
     description: "",
-    CompleteDate: "",
+    createDate: "",
+    lastUpdate: "",
     icon: { iconID: 1, color: "#ff4040" },
   });
 

@@ -1,5 +1,5 @@
-import { Box, Modal } from '@mui/material';
-import { useStore } from '../store/Projects'; 
+import { Box, Modal } from "@mui/material";
+import { useGlobalStore } from "@/store/Global";
 
 /**
  * Interface definition for the {@link BasicModal} component props.
@@ -18,34 +18,34 @@ interface BasicModalProps {
 /**
  * BasicModal Component.
  * A reusable container abstraction wrapping Material UI's core Modal system.
- * Subscribes directly to global store properties to manage overlay triggers, 
+ * Subscribes directly to global store properties to manage overlay triggers,
  * and handles localized layout mounting dynamically via context parameters.
  * * @component
  */
 export default function BasicModal(children: BasicModalProps) {
   /** @type {boolean} Global reactive binary state checking if this viewport overlay should render visible */
-  const isModalOpened = useStore((state) => state.isModalOpened);
+  const ModalState = useGlobalStore((state) => state.Modal);
 
   return (
     <Modal
-      open={isModalOpened} 
-      onClose={() => children.OnClose(false)} 
+      open={ModalState.isOpen}
+      onClose={() => children.OnClose(false)}
       aria-labelledby="modal-title"
     >
-      <Box sx={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: 'white',
-        p: 4,
-        borderRadius: '15px'
-      }}>
-        
+      <Box
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 400,
+          bgcolor: "white",
+          p: 4,
+          borderRadius: "15px",
+        }}
+      >
         {/* Dynamic Context Viewport Renderer Node */}
         <children.context />
-
       </Box>
     </Modal>
   );

@@ -11,6 +11,7 @@ export default function ButtonUI(children: ButtonProps) {
         disabled={children.disabled}
         startIcon={children.startIcon}
         endIcon={children.endIcon}
+        className={children.className}
       >
         {children.title}
       </Button>

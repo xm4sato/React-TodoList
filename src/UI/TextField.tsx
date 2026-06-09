@@ -14,9 +14,10 @@ import {
 interface TextFieldUI {
   multiline?: boolean;
   label: string;
+  value?: string;
   variant?: TextFieldVariants;
   error?: boolean;
-  helperText? : string;
+  helperText?: string;
   slotProps?: {
     input: {
       startAdornment: JSX.Element;
@@ -34,6 +35,7 @@ function TextFieldUI(children: TextFieldUI) {
         onChange={(e) => children.Onchange(e.target.value)}
         id="standard-basic"
         label={children.label}
+        value={children.value}
         multiline={children.multiline || false}
         variant={children.variant}
         error={children.error}

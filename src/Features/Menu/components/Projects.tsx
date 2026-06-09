@@ -1,11 +1,11 @@
 import { type ProjectType } from "@/Types/Projects";
 import { type JSX } from "react";
 import { Add, Work } from "@mui/icons-material";
-import BasicModal from "@/utils/Modal";
-import { useStore } from "@/store/Projects";
-import { ProjectModalContext } from "../Layout/ProjectModal";
+import { useProjectStore } from "@/store/Projects";
 import { colors } from "../../../UI/color";
 import { iconsList } from "../constants/SideMenu";
+import { ProjectModalContext } from "../Layout/ProjectModal";
+import { useGlobalStore } from "@/store/Global";
 
 /**
  * Projects Navigation Component.
@@ -15,12 +15,11 @@ import { iconsList } from "../constants/SideMenu";
  */
 function Projects(): JSX.Element {
   /** @type {function} Store action to mutate the persistent state visibility flag of the modal container */
-  const handleModal = useStore((state) => state.handleModal);
+  const handleModal = useGlobalStore((state) => state.handleModal);
   
   /** @type {ProjectType[]} Target array tracking actively synchronized, user-defined project data entries */
-  const ProjectsList = useStore((state) => state.Projects);
+  const ProjectsList = useProjectStore((state) => state.Projects);
 
-  console.log(ProjectsList);
 
   return (
     <>
@@ -33,7 +32,7 @@ function Projects(): JSX.Element {
         </h4>
         {/* Interactive Trigger Button to launch creation wizard view */}
         <button
-          onClick={() => handleModal(true)}
+          onClick={() => handleModal(true,ProjectModalContext)}
           className={`hover:bg-[${colors.text_main} p]-1 rounded-full transition-colors`}
         >
           <Add
@@ -50,13 +49,6 @@ function Projects(): JSX.Element {
         </button>
       </div>
 
-      {/* Globalized Backdrop Creation Form Portal Sheet Wrapper */}
-      <BasicModal
-        title="إضافة مشروع"
-        context={ProjectModalContext}
-        OnClose={handleModal}
-      />
-
       {/* Scrollable Container Group tracking user generated database queues */}
       <div className="w-full flex flex-col gap-1 my-5 overflow-auto max-h-48 scrollbar-hide">
         {ProjectsList.map((Project: ProjectType) => {
@@ -68,7 +60,6 @@ function Projects(): JSX.Element {
           );
           /** @type {React.ComponentType | undefined} Evaluated constructor value for specific vector layout rendering */
           const IconComponent = getIcon?.name;
-          console.log(IconComponent);
           
           return (
             <div

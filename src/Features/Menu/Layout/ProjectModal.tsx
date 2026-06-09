@@ -1,11 +1,12 @@
 import { type ProjectType } from "@/Types/Projects";
-import { useStore } from "@/store/Projects";
+import { useProjectStore } from "@/store/Projects";
 import TextFieldUI from "../../../UI/TextField";
 import TypoGraphy from "../../../UI/TypoGraphy";
 import ButtonUI from "../../../UI/ButtonUI";
 import { useProjectsState } from "../hooks/Projects";
 import { iconColors, iconsList } from "../constants/SideMenu";
 import Project_iconTheme from "../Layout/Project_iconTheme";
+import { useGlobalStore } from "@/store/Global";
 
 /**
  * ProjectModalContext Component.
@@ -20,10 +21,10 @@ export const ProjectModalContext = () => {
   const { project, setProject, loading, setLoading } = useProjectsState();
 
   /** @type {function} Action from global Zustand store to mutate modal open/close binary state */
-  const handleModal = useStore((state) => state.handleModal);
-  
+  const handleModal = useGlobalStore((state) => state.handleModal);
+
   /** @type {function} Async action from global Zustand store to append verified project records to persistent arrays */
-  const AddProject = useStore((state) => state.AddProject);
+  const AddProject = useProjectStore((state) => state.AddProject);
 
   /**
    * Orchestrates the loading interface cycle during project generation.
@@ -33,6 +34,7 @@ export const ProjectModalContext = () => {
   const handleAddProject = (project: ProjectType) => {
     setLoading(true);
     AddProject(project);
+    handleModal(false)
     setLoading(false);
   };
 
@@ -56,6 +58,24 @@ export const ProjectModalContext = () => {
           }}
           label="اسم المشروع"
           variant="standard"
+          sx={{
+            display: "flex",
+            justifyContent: "right",
+            margin: "10px 0",
+            "& label": {
+              left: "auto",
+              right: 0,
+              transformOrigin: "right",
+            },
+            "& .MuiInput-root": {
+              textAlign: "right",
+              direction: "rtl",
+            },
+            // تحريك الخط السفلي ليبدأ من اليمين
+            "& .MuiInput-underline:after": {
+              transformOrigin: "right",
+            },
+          }}
         />
 
         {/* Project Optional Description Input Handler */}
@@ -64,6 +84,24 @@ export const ProjectModalContext = () => {
           label="وصف المشروع (إختياري)"
           multiline={true}
           variant="standard"
+          sx={{
+            display: "flex",
+            justifyContent: "right",
+            margin: "10px 0",
+            "& label": {
+              left: "auto",
+              right: 0,
+              transformOrigin: "right",
+            },
+            "& .MuiInput-root": {
+              textAlign: "right",
+              direction: "rtl",
+            },
+            // تحريك الخط السفلي ليبدأ من اليمين
+            "& .MuiInput-underline:after": {
+              transformOrigin: "right",
+            },
+          }}
         />
       </div>
 
