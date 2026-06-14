@@ -6,6 +6,7 @@ import { colors } from "../../../UI/color";
 import { iconsList } from "../constants/SideMenu";
 import { ProjectModalContext } from "../Layout/ProjectModal";
 import { useGlobalStore } from "@/store/Global";
+import { useTaskStore } from "@/store/Tasks";
 
 /**
  * Projects Navigation Component.
@@ -16,15 +17,18 @@ import { useGlobalStore } from "@/store/Global";
 function Projects(): JSX.Element {
   /** @type {function} Store action to mutate the persistent state visibility flag of the modal container */
   const handleModal = useGlobalStore((state) => state.handleModal);
-  
+
   /** @type {ProjectType[]} Target array tracking actively synchronized, user-defined project data entries */
   const ProjectsList = useProjectStore((state) => state.Projects);
+
+  const TaskList = useTaskStore((state) => state.Tasks);
+
 
 
   return (
     <>
       <hr className="text-gray-300 my-1" />
-      
+
       {/* Header Panel for Custom Projects Registry Section */}
       <div className="w-full px-3 mt-3 flex flex-row-reverse justify-between items-center">
         <h4 className={`font-bold`} style={{ color: colors.text_main }}>
@@ -32,7 +36,7 @@ function Projects(): JSX.Element {
         </h4>
         {/* Interactive Trigger Button to launch creation wizard view */}
         <button
-          onClick={() => handleModal(true,ProjectModalContext)}
+          onClick={() => handleModal(true, ProjectModalContext)}
           className={`hover:bg-[${colors.text_main} p]-1 rounded-full transition-colors`}
         >
           <Add
@@ -60,7 +64,7 @@ function Projects(): JSX.Element {
           );
           /** @type {React.ComponentType | undefined} Evaluated constructor value for specific vector layout rendering */
           const IconComponent = getIcon?.name;
-          
+
           return (
             <div
               key={Project.id}
@@ -77,9 +81,9 @@ function Projects(): JSX.Element {
                     />
                   ) : (
                     /* Fallback vector node used if standard index evaluation maps empty values */
-                    <Work                       
+                    <Work
                       className="rounded-md p-1"
-                      sx={{ background: Project.icon.color, fontSize: "35px" }} 
+                      sx={{ background: Project.icon.color, fontSize: "35px" }}
                     />
                   )}
                 </div>
@@ -93,7 +97,7 @@ function Projects(): JSX.Element {
 
               {/* Numerical Badge Counter showing task load statistics */}
               <span className="text-xs font-bold px-2 py-1 rounded-lg bg-brand-primary text-brand-white group-hover:bg-[#E8E5DA] group-hover:text-brand-secondary transition-all">
-                10
+                {TaskList.filter((task) => task.RelatedProjects?.includes(Project.id)).length}
               </span>
             </div>
           );
