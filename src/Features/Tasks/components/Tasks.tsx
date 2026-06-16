@@ -9,6 +9,7 @@ import { ButtonGroup } from "@mui/material";
 import { ConfirmModalContext } from "../Layout/ConfirmModal";
 import { UpdateTaskModalContext } from "../Layout/UpdateTaskModal";
 import { colors } from "@/UI/color";
+import { useEffect, useState } from "react";
 
 /**
  * TasksSection Component
@@ -19,27 +20,52 @@ export default function TasksSection() {
   /** Reactive stream reading the raw immutable tasks array directly from the Zustand partition */
   const TaskList: TaskType[] = useTaskStore((state) => state.Tasks);
 
+  const FilterName = useTaskStore((state) => state.FilterName);
+  const [rawTaskList, setRawTaskList] = useState<TaskType[]>(TaskList);
   /**
    * Defensive Chronological Sorting Operation
    * Creates an un-mutated shallow copy array pipeline to compute order priorities.
    * Tasks missing a valid timestamp (null/undefined) are dynamically grouped and sank to the viewport bottom.
    */
-  const sortedTasks = [...TaskList].sort((a, b) => {
-    // STEP 1: If both tasks lack scheduled metadata, preserve their existing index positioning
-    if (!a.date && !b.date) return 0;
 
-    // STEP 2: If leading pointer (a) is nullified, push it downstream to the layout bottom
-    if (!a.date) return 1;
+  useEffect(() => {
+    const FilteredTasks = TaskList.filter((task) => {
+      if (FilterName === "all") return true;
+      if (FilterName === "completed") return task.completed;
+      if (FilterName === "today") {
+        const today = new Date();
+        const taskDate = new Date(task.date || "");
+        return (
+          taskDate.getFullYear() === today.getFullYear() &&
+          taskDate.getMonth() === today.getMonth() &&
+          taskDate.getDate() === today.getDate()
+        );
+      }
+      if (FilterName === "scheduled") {
+        return task.date !== null && !task.completed;
+      }
+      return false;
+    });
 
-    // STEP 3: If trailing pointer (b) is nullified, shift it downstream to the layout bottom
-    if (!b.date) return -1;
+    const sortedTasks = [...FilteredTasks].sort((a, b) => {
+      // STEP 1: If both tasks lack scheduled metadata, preserve their existing index positioning
+      if (!a.date && !b.date) return 0;
 
-    /**
-     * STEP 4: Safe Chronological Evaluation
-     * Explicit guard clauses guarantee that execution layers only handle confirmed ISO strings.
-     */
-    return new Date(a.date).getTime() - new Date(b.date).getTime();
-  });
+      // STEP 2: If leading pointer (a) is nullified, push it downstream to the layout bottom
+      if (!a.date) return 1;
+
+      // STEP 3: If trailing pointer (b) is nullified, shift it downstream to the layout bottom
+      if (!b.date) return -1;
+
+      /**
+       * STEP 4: Safe Chronological Evaluation
+       * Explicit guard clauses guarantee that execution layers only handle confirmed ISO strings.
+       */
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    });
+
+    setRawTaskList(sortedTasks);
+  }, [FilterName, TaskList]);
 
   /** Destructured action dispatchers extracted from global state management architectures */
   const setTaskID = useTaskStore((state) => state.setTaskID);
@@ -86,12 +112,12 @@ export default function TasksSection() {
       {/* Scrollable Viewport Wrapper Node */}
       <ul className="overflow-y-auto h-full my-5 max-h-105 scrollbar-thumb-brand-secondary scrollbar-track-gray-100 scrollbar-gutter-stable">
         {/* Conditional Blank Slate Empty State Handler */}
-        {sortedTasks.length <= 0 && (
+        {rawTaskList.length <= 0 && (
           <p className="text-center text-gray-500 mt-10">لا توجد مهام حالياً</p>
         )}
 
         {/* Iterative Rendering Loop Engine */}
-        {sortedTasks.map((task) => (
+        {rawTaskList.map((task) => (
           <li
             key={task.id}
             className="flex flex-row-reverse gap-3 my-5 text-brand-primary bg-white px-5 py-3 rounded-md shadow-xl"

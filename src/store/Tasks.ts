@@ -24,12 +24,15 @@ export const useTaskStore = create<TaskStoreType>((set, get) => ({
   },
   loading: false,
   TaskID: 0,
-
+  FilterName: "all",
   /** Mutates core operation background execution loader layouts */
   setLoading: (value: boolean) => set({ loading: value }),
 
   /** Buffers targeted execution record index contexts across global application workflows */
   setTaskID: (id: number) => set({ TaskID: id }),
+
+  /** Mutates the Name of Task Filter into the state space workspace buffers */
+  setFilterName: (filterName: string) => set({ FilterName: filterName }),
 
   /** Upstream state synchronization string setter targeting the base core title field */
   setTitle: (value: string) => set({ Task: { ...get().Task, title: value } }),

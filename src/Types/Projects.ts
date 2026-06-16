@@ -9,7 +9,9 @@ export type SectionsType = {
   /** @type {string} Display name of the section (e.g., "Inbox", "Today") */
   name: string;
   /** @type {ReactElement} Pre-rendered React icon element for the sidebar */
-  icon: ReactElement;
+  icon: ReactElement; 
+   /** @type {String} Pre-rendered React icon element for the sidebar */
+  path: string;
 };
 
 /**
@@ -107,15 +109,4 @@ export type Task = {
   CompleteDate: string;
 };
 
-/**
- * Global application enumerations for human-readable validation error string templates.
- * Enforces localized (Arabic) UI messaging constants while maintaining clean code modularity.
- */
-// export enum errorText {
-//   /** Fallback message triggered when mandatory user input blocks are left completely blank */
-//   empty = "لا يمكن ترك هذا الحقل فارغا",
-//   /** Triggered when form input inputs fail to meet predefined minimum length bounds */
-//   lessCharacter = "عدد الأحرف اقل من العدد المطلوب",
-//   /** Global fail-safe fallback string returned during unhandled catch block exceptions */
-//   unknownError = "حدث خطأ! ,يرجى إعادة المحاولة",
-// }
+

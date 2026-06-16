@@ -23,8 +23,6 @@ function Projects(): JSX.Element {
 
   const TaskList = useTaskStore((state) => state.Tasks);
 
-
-
   return (
     <>
       <hr className="text-gray-300 my-1" />
@@ -97,7 +95,11 @@ function Projects(): JSX.Element {
 
               {/* Numerical Badge Counter showing task load statistics */}
               <span className="text-xs font-bold px-2 py-1 rounded-lg bg-brand-primary text-brand-white group-hover:bg-[#E8E5DA] group-hover:text-brand-secondary transition-all">
-                {TaskList.filter((task) => task.RelatedProjects?.includes(Project.id)).length}
+                {
+                  TaskList.filter((task) =>
+                    task.RelatedProjects?.includes(Project.id),
+                  ).length
+                }
               </span>
             </div>
           );

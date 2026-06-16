@@ -1,5 +1,5 @@
 import { colors } from "../../../UI/color";
-import type { ProjectsListType, SimpleList } from "@/Types/Projects";
+import type { ProjectsListType, SectionsType, SimpleList } from "@/Types/Projects";
 import IconGenerator from "@/utils/IconsGenerator";
 
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
@@ -9,6 +9,16 @@ import AgricultureIcon from "@mui/icons-material/Agriculture";
 import AirlineSeatIndividualSuiteIcon from "@mui/icons-material/AirlineSeatIndividualSuite";
 import BackupTableIcon from "@mui/icons-material/BackupTable";
 import WorkIcon from "@mui/icons-material/Work";
+
+
+
+
+export const SectionsList : SectionsType[] = [
+{id : 1 , name : "جميع المهام" , icon : <IconGenerator name="List" sx={{color : colors.text_main , "&:hover" : "color:black"}} /> , path : "all"},
+{id : 2 , name : "اليوم" , icon : <IconGenerator name="CalendarToday" sx={{color : colors.text_main}} /> , path : "today"},
+{id : 3 , name : "القادمة" , icon : <IconGenerator name="CalendarMonth" sx={{color : colors.text_main}} /> , path : "pending"},
+{id : 4 , name : "المكتملة" , icon : <IconGenerator name="TaskAlt" sx={{color : colors.text_main}}/> , path : "completed"},
+];
 
 /**
  * Array containing the main structural navigation items for the application side menu layout context.
